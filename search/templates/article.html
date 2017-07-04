@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load filter %}
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        div a {
+            display: inline-block;
+            width: 70px;
+            height: 20px;
+            border: 1px solid yellowgreen;
+            text-align: center;
+            line-height: 20px;
+        }
+
+        .active {
+            background-color: aquamarine;
+        }
+    </style>
+</head>
+
+<body>
+<h3>过滤条件</h3>
+<div>
+    <h5>分类</h5>
+    {% filter_all kwargs 'category' %}
+    {% for row in category_list %}
+        {% if row.id == kwargs.category_id %}
+            <a class="active" href="/home/article-{{ row.id }}-{{ kwargs.article_type_id }}">{{ row.caption }}</a>
+        {% else %}
+            <a href="/home/article-{{ row.id }}-{{ kwargs.article_type_id }}">{{ row.caption }}</a>
+        {% endif %} {% endfor %}
+</div>
+<div>
+    <h5>文章类型</h5>
+    {% filter_all kwargs 'article_type' %}
+
+    {% for row in article_type_list %}
+    {% if row.id == kwargs.article_type_id %}
+        <a class="active" href="/home/article-{{ kwargs.category_id }}-{{ row.id }}">{{ row.caption }}</a>
+    {% else %}
+        <a href="/home/article-{{ kwargs.category_id }}-{{ row.id }}">{{ row.caption }}</a>
+    {% endif %} {% endfor %}
+</div>
+
+<h3>查询结果</h3>
+<ul>
+    {% for row in result %}
+        <li style="margin-top: 30px"><a
+                href="">{{ row.id }}--{{ row.title }}--{{ row.category_id }}/{{ row.article_type_id }}</a></li>
+    {% endfor %}
+</ul>
+</body>
+
+</html>
